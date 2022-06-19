@@ -48,3 +48,12 @@ VALUES
 ('sushi', 10),
 ('curry', 15),
 ('ramen', 12);
+
+-- SOLUTIONS
+
+--1 Total amount spend by each customer
+SELECT customer_id, SUM(price) 
+FROM menu
+FULL OUTER JOIN sales
+ON sales.product_id = menu.product_id
+GROUP BY customer_id
