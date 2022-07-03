@@ -89,3 +89,5 @@ SELECT most_pop, customer_id, product_name FROM
 	ON m.product_id = s.product_id
 	GROUP BY customer_id, product_name) x
 	WHERE x.rnk = 1
+
+--6 Which item was purchased first by the customer after they became a member?
