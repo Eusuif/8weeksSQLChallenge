@@ -91,3 +91,13 @@ SELECT most_pop, customer_id, product_name FROM
 	WHERE x.rnk = 1
 
 --6 Which item was purchased first by the customer after they became a member?
+SELECT customer_id, product_name,order_date FROM (
+	SELECT s.customer_id, product_name, order_date,
+	DENSE_RANK() OVER(PARTITION BY s.customer_id ORDER BY order_date) AS purchased_first
+	FROM members m
+	JOIN sales s
+	ON m.customer_id = s.customer_id
+	JOIN menu n
+	ON s.product_id = n.product_id
+	WHERE order_date > join_date) x
+WHERE x.purchased_first = 1
