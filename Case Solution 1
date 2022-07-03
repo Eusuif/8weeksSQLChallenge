@@ -99,5 +99,5 @@ SELECT customer_id, product_name,order_date FROM (
 	ON m.customer_id = s.customer_id
 	JOIN menu n
 	ON s.product_id = n.product_id
-	WHERE order_date > join_date) x
+	WHERE order_date >= join_date) x
 WHERE x.purchased_first = 1
