@@ -113,3 +113,33 @@ SELECT customer_id, product_name,order_date FROM (
 	ON s.product_id = n.product_id
 	WHERE order_date < join_date) x
 WHERE x.purchased_first = 1
+
+--8 What is the total items and amount spent for each member before they became a member?
+SELECT s.customer_id, SUM(price) AS total_amount , COUNT(s.product_id) AS no_items
+FROM sales s
+JOIN menu m
+ON m.product_id = s.product_id
+JOIN members mb
+ON s.customer_id = mb.customer_id
+WHERE order_date < join_date
+GROUP BY s.customer_id
+
+
+--9 If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+
+With points AS
+(
+SELECT *, 
+	CASE WHEN product_id = 1 THEN price*20
+		 ELSE price*10 
+		 END AS points
+FROM menu
+)
+SELECT customer_id, SUM(points) AS total_points
+FROM sales s
+JOIN points p
+ON p.product_id = s.product_id
+GROUP BY customer_id
+ORDER BY SUM(points);
+
+--10 
