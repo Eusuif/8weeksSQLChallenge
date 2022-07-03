@@ -101,3 +101,15 @@ SELECT customer_id, product_name,order_date FROM (
 	ON s.product_id = n.product_id
 	WHERE order_date >= join_date) x
 WHERE x.purchased_first = 1
+
+--7 Which item was purchased just before the customer became a member?
+SELECT customer_id, product_name,order_date FROM (
+	SELECT s.customer_id, product_name, order_date,
+	DENSE_RANK() OVER(PARTITION BY s.customer_id ORDER BY order_date DESC) AS purchased_first
+	FROM members m
+	JOIN sales s
+	ON m.customer_id = s.customer_id
+	JOIN menu n
+	ON s.product_id = n.product_id
+	WHERE order_date < join_date) x
+WHERE x.purchased_first = 1
